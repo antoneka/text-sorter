@@ -1,10 +1,13 @@
 #include "common.h"
+#include <assert.h>
+
 
 int expandStringArray(OneginFile *onegin)
 {
     if (onegin->cur_line_num == onegin->total_line_num)
     {
         onegin->total_line_num += STANDART_LINES_NUM;
+
 
         char **string_arr_tmp = (char**)realloc(onegin->string_arr, onegin->total_line_num * sizeof(char*));
 
@@ -13,11 +16,14 @@ int expandStringArray(OneginFile *onegin)
             return EXPANDING_STRING_ARRAY_ERROR;
         }
 
+
         onegin->string_arr = string_arr_tmp;
     }
 
+
     return EXECUTION_SUCCESS;
 }
+
 
 size_t getFileSize(FILE *file_input)
 {
@@ -27,19 +33,28 @@ size_t getFileSize(FILE *file_input)
 
     fseek(file_input, 0, SEEK_SET);
 
+
     return file_size;
 }
+
 
 void freeFile(OneginFile *onegin)
 {
     if (onegin->file)
     {
         fclose(onegin->file);
+        onegin->file = NULL;
     }
 
+
     free(onegin->buffer);
+    onegin->buffer = NULL;
+
+
     free(onegin->string_arr);
+    onegin->string_arr = NULL;
 }
+
 
 int statusCheck(int status)
 {
@@ -47,25 +62,31 @@ int statusCheck(int status)
     {
         case FILE_OPEN_ERROR:
             fprintf(stderr, "%s\n", "The file doesn`t exist");
-            return FILE_OPEN_ERROR;
+            return 0;
+
 
         case BUFFER_INITIALIZE_ERROR:
             fprintf(stderr, "%s\n", "Buffer initialization error");
-            return BUFFER_INITIALIZE_ERROR;
+            return 0;
+
 
         case READ_SYMBOLS_ERROR:
             fprintf(stderr, "%s\n", "Text reading error");
-            return READ_SYMBOLS_ERROR;
+            return 0;
+
 
         case CALLOC_STRING_ARRAY_ERROR:
             fprintf(stderr, "%s\n", "String array initialization error");
-            return CALLOC_STRING_ARRAY_ERROR;
+            return 0;
+
 
         case EXPANDING_STRING_ARRAY_ERROR:
             fprintf(stderr, "%s\n", "String array expansion error");
-            return EXPANDING_STRING_ARRAY_ERROR;
-    }
+            return 0;
 
-    return EXECUTION_SUCCESS;
+
+        default:
+            return EXECUTION_SUCCESS;
+    }
 }
 

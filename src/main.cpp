@@ -4,22 +4,28 @@
 #include "text_sorting.h"
 #include "common.h"
 
+
 int main()
 {
     OneginFile onegin = {};
 
+
     int execution_status = inputText(&onegin);
     
-    if (statusCheck(execution_status) != EXECUTION_SUCCESS)
+    if (!statusCheck(execution_status))
     {
         return 1;
     }
 
+
     textSort(&onegin);
+
 
     outputText(&onegin);
     
+
     freeFile(&onegin);
+
 
     return 0;
 }

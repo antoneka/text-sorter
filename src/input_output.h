@@ -20,8 +20,10 @@ typedef struct
 
 int inputText(OneginFile *onegin);
 void outputText(OneginFile *onegin);
-int bufferParser(OneginFile *onegin);
+int initStringArray(OneginFile *onegin);
 int expandStringArray(OneginFile *onegin);
 size_t getFileSize(FILE *file_input);
+int initBuffer(OneginFile *onegin);
+int countLines(OneginFile *onegin);
 
 #endif // INPUT_H
