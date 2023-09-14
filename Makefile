@@ -1,4 +1,4 @@
-CC=g++
+CC=g++ -std=c++17
 CFLAGS=-D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations\
 	   -Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts\
 	   -Wconditionally-supported -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal\
@@ -14,18 +14,26 @@ CFLAGS=-D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-
 		integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,$\
 		shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr
 
-SRC=src/main.cpp src/text_sorting.cpp src/input_output.cpp src/common.cpp
-OBJ=$(SRC:.cpp=.o)
-TARGET=src/onegin
+TARGET=onegin
+
+CCFLAGS = -I./include/
+
+OBJ_DIR=.obj
+$(shell mkdir -p $(OBJ_DIR))
+
+SRC=$(wildcard src/*.cpp)
+OBJ = $(patsubst src/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
+
+.PHONY: all clean
 
 all: onegin
 
 onegin: $(OBJ)
-	$(CC) $(OBJ) -o $(TARGET)
+	$(CC) $^ -o $(TARGET)
 
-%.o: %.cpp
-	$(CC) -c $< -o $@
+$(OBJ_DIR)/%.o: src/%.cpp
+	$(CC) $(CCFLAGS) -c $< -o $@
 
 clean: 
-	rm $(TARGET) $(OBJ)
+	rm -rf $(TARGET) $(OBJ_DIR)
 

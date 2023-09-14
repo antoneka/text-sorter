@@ -1,7 +1,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include "input_output.h"
+#include <stdio.h>
 
 enum Errors 
 {
@@ -11,11 +11,11 @@ enum Errors
     READ_SYMBOLS_ERROR           = 2,
     EXPANDING_STRING_ARRAY_ERROR = 3,
     CALLOC_STRING_ARRAY_ERROR    = 4,
+    ONEGINFILE_EXISTENCE_ERROR   = 5,
+    MISSING_ONEGINFILE_ERROR     = 6,
 };
 
-int expandStringArray(OneginFile *onegin);
 size_t getFileSize(FILE *file_input);
-void freeFile(OneginFile *onegin);
-int statusCheck(int status);
+int handleErrors(int status);
 
 #endif // COMMON_H

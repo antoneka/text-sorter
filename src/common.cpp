@@ -1,29 +1,7 @@
 #include "common.h"
 #include <assert.h>
 
-
-int expandStringArray(OneginFile *onegin)
-{
-    if (onegin->cur_line_num == onegin->total_line_num)
-    {
-        onegin->total_line_num += STANDART_LINES_NUM;
-
-
-        char **string_arr_tmp = (char**)realloc(onegin->string_arr, onegin->total_line_num * sizeof(char*));
-
-        if (!string_arr_tmp)
-        {
-            return EXPANDING_STRING_ARRAY_ERROR;
-        }
-
-
-        onegin->string_arr = string_arr_tmp;
-    }
-
-
-    return EXECUTION_SUCCESS;
-}
-
+//-------------------------------------------------------------------------------------------------
 
 size_t getFileSize(FILE *file_input)
 {
@@ -37,26 +15,9 @@ size_t getFileSize(FILE *file_input)
     return file_size;
 }
 
+//-------------------------------------------------------------------------------------------------
 
-void freeFile(OneginFile *onegin)
-{
-    if (onegin->file)
-    {
-        fclose(onegin->file);
-        onegin->file = NULL;
-    }
-
-
-    free(onegin->buffer);
-    onegin->buffer = NULL;
-
-
-    free(onegin->string_arr);
-    onegin->string_arr = NULL;
-}
-
-
-int statusCheck(int status)
+int handleErrors(int status)
 {
     switch (status)
     {
