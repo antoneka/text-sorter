@@ -2,18 +2,13 @@
 #include "common.h"
 #include "onegin_file.h"
 
-//-------------------------------------------------------------------------------------------------
+static int initBuffer(OneginFile *onegin);
 
-void outputText(OneginFile *onegin)
-{
-    for (size_t i = 0; i < onegin->cur_line_num; i++)
-    {
-        if (onegin->string_arr[i].length > 0)
-        {
-            printf("%s\n", onegin->string_arr[i].str);
-        }
-    }
-}
+static int initStringArray(OneginFile *onegin);
+
+static int fillStringArr(OneginFile *onegin);
+
+static int expandStringArray(OneginFile *onegin);
 
 //-------------------------------------------------------------------------------------------------
 
@@ -22,12 +17,10 @@ int OneginFileCtor(OneginFile *onegin, const char *file_name)
     assert(onegin != nullptr);
     assert(file_name != nullptr);
 
-
-    if (onegin->status != DESTRUCTED)
+    if (onegin->status == CONSTRUCTED)
     {
         return ONEGINFILE_EXISTENCE_ERROR;
     }
-
 
     onegin->file = fopen(file_name, "r");
 
@@ -36,9 +29,12 @@ int OneginFileCtor(OneginFile *onegin, const char *file_name)
         return FILE_OPEN_ERROR;
     }
 
+    onegin->file_size = getFileSize(file_name);
 
-    onegin->file_size = getFileSize(onegin->file);
-
+    if (onegin->file_size == GETTING_FILE_SIZE_ERROR)
+    {
+        return GETTING_FILE_SIZE_ERROR;
+    }
 
     int buffer_init_status = initBuffer(onegin);
 
@@ -47,7 +43,6 @@ int OneginFileCtor(OneginFile *onegin, const char *file_name)
         return buffer_init_status;
     }
 
-
     int string_init_status = initStringArray(onegin);
 
     if (string_init_status != EXECUTION_SUCCESS)
@@ -55,9 +50,10 @@ int OneginFileCtor(OneginFile *onegin, const char *file_name)
         return string_init_status;
     }
 
+    fclose(onegin->file);
+    onegin->file = nullptr;
 
     onegin->status = CONSTRUCTED;
-
 
     return EXECUTION_SUCCESS;
 }
@@ -73,14 +69,12 @@ static int initBuffer(OneginFile *onegin)
         return BUFFER_INITIALIZE_ERROR;
     }
 
-
     size_t read_symbols = fread(onegin->buffer, sizeof(char), onegin->file_size, onegin->file);
 
     if (read_symbols != onegin->file_size)
     {
         return READ_SYMBOLS_ERROR;
     }
-
 
     return EXECUTION_SUCCESS;
 }
@@ -90,9 +84,7 @@ static int initBuffer(OneginFile *onegin)
 static int initStringArray(OneginFile *onegin)
 {
     onegin->total_lines_num = STANDART_LINES_NUM;
-
     onegin->cur_line_num = 0;
-
 
     onegin->string_arr = (String*)calloc(onegin->total_lines_num, sizeof(String));
 
@@ -101,14 +93,12 @@ static int initStringArray(OneginFile *onegin)
         return CALLOC_STRING_ARRAY_ERROR;
     }
 
-
     int lines_counting_status = fillStringArr(onegin);
 
     if (lines_counting_status != EXECUTION_SUCCESS)
     {
         return lines_counting_status;
     }
-
 
     return EXECUTION_SUCCESS;
 }
@@ -121,26 +111,24 @@ static int fillStringArr(OneginFile *onegin)
 
     size_t string_len = 1;
 
-
-    for (size_t symbol_cnt = 1; symbol_cnt < onegin->file_size; symbol_cnt++, string_len++)
+    for (size_t symbol_cnt = 1; symbol_cnt < onegin->file_size; symbol_cnt++)
     {
         if (onegin->buffer[symbol_cnt] == '\n')
         {
-            if (symbol_cnt != onegin->file_size - 1)
-            {
-                onegin->string_arr[onegin->cur_line_num].str = onegin->buffer + symbol_cnt + 1;
-
-                onegin->string_arr[onegin->cur_line_num - 1].length = string_len;
-
-                string_len = -1;
-
-                onegin->cur_line_num++;
-            }
-
-
             onegin->buffer[symbol_cnt] = '\0';
-        }
 
+            if (symbol_cnt == onegin->file_size - 1) break;
+
+            onegin->string_arr[onegin->cur_line_num].str = onegin->buffer + symbol_cnt + 1;
+            onegin->string_arr[onegin->cur_line_num - 1].length = string_len;
+
+            onegin->cur_line_num++;
+            string_len = 0;
+        }
+        else
+        {
+            string_len++;
+        }
 
         if (onegin->cur_line_num == onegin->total_lines_num)
         {
@@ -153,10 +141,8 @@ static int fillStringArr(OneginFile *onegin)
         }
     }
 
-
-    onegin->string_arr[onegin->cur_line_num - 1].length = string_len - 1;
+    onegin->string_arr[onegin->cur_line_num - 1].length = string_len;
                                                     
-
     return EXECUTION_SUCCESS;
 }
 
@@ -166,7 +152,6 @@ static int expandStringArray(OneginFile *onegin)
 {
     onegin->total_lines_num += STANDART_LINES_NUM;
 
-
     String *string_arr_tmp = (String*)realloc(onegin->string_arr, onegin->total_lines_num * sizeof(String));
 
     if (!string_arr_tmp)
@@ -174,9 +159,7 @@ static int expandStringArray(OneginFile *onegin)
         return EXPANDING_STRING_ARRAY_ERROR;
     }
 
-
     onegin->string_arr = string_arr_tmp;
-
 
     return EXECUTION_SUCCESS;
 }
@@ -187,39 +170,29 @@ int oneginFileDtor(OneginFile *onegin)
 {
     assert(onegin != nullptr);
 
-    if (onegin->status != CONSTRUCTED)
+    if (onegin->status == DESTRUCTED)
     {
         return MISSING_ONEGINFILE_ERROR;
     }
 
-
-    if (onegin->file)
+    if (onegin->file != nullptr)
     {
         fclose(onegin->file);
-
         onegin->file = nullptr;
-
-        onegin->file_size = -1;
     }
 
+    onegin->file_size = 0;
 
     free(onegin->buffer);
-
     onegin->buffer = nullptr;
 
-
     free(onegin->string_arr);
-
     onegin->string_arr = nullptr;
 
-
-    onegin->total_lines_num = -1;
-
-    onegin->cur_line_num = -1;
-
+    onegin->total_lines_num = 0;
+    onegin->cur_line_num = 0;
 
     onegin->status = DESTRUCTED;
-
 
     return EXECUTION_SUCCESS;
 }
