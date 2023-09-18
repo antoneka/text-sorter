@@ -19,6 +19,7 @@ int OneginFileCtor(OneginFile *onegin, const char *file_name)
 
     if (onegin->status == CONSTRUCTED)
     {
+        // ALREADY_CONSTRUCTED
         return ONEGINFILE_EXISTENCE_ERROR;
     }
 
@@ -115,6 +116,7 @@ static int fillStringArr(OneginFile *onegin)
     {
         if (onegin->buffer[symbol_cnt] == '\n')
         {
+            // remove
             onegin->buffer[symbol_cnt] = '\0';
 
             if (symbol_cnt == onegin->file_size - 1) break;
@@ -150,6 +152,7 @@ static int fillStringArr(OneginFile *onegin)
 
 static int expandStringArray(OneginFile *onegin)
 {
+    // multiple by 2
     onegin->total_lines_num += STANDART_LINES_NUM;
 
     String *string_arr_tmp = (String*)realloc(onegin->string_arr, onegin->total_lines_num * sizeof(String));
@@ -172,6 +175,8 @@ int oneginFileDtor(OneginFile *onegin)
 
     if (onegin->status == DESTRUCTED)
     {
+        // ALREADY_DESTRUCTED
+        //
         return MISSING_ONEGINFILE_ERROR;
     }
 

@@ -4,6 +4,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
+// input output files
 void inputFileNames(FileNames *names)
 {
     assert(names != nullptr);

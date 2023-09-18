@@ -23,23 +23,62 @@ size_t getFileSize(const char *filename)
 
 //-------------------------------------------------------------------------------------------------
 
-void swapVoid(void *data, size_t element1_pos, size_t element2_pos, size_t size)
+void swapVoid(void *element1, void *element2, size_t size)
 {
-    assert(data != nullptr);
+    assert(element1 != nullptr);
+    assert(element2 != nullptr);
 
-    void *tmp = calloc(1, size);
+    size_t size_ll = sizeof(long long);
+    size_t size_i = sizeof(int);
+    size_t size_ch = sizeof(char);
 
-    memcpy(tmp, (char*)data + element2_pos * size, size);
+    while (size > 0)
+    {
+        if (size_ll <= size)
+        {
+            long long tmp = 0;
 
-    memcpy((char*)data + element2_pos * size, (char*)data + element1_pos * size, size);
+            tmp = *(long long*)element1;
+            *(long long*)element1 = *(long long*)element2;
+            *(long long*)element2 = tmp;
 
-    memcpy((char*)data + element1_pos * size, tmp, size);
+            element1 = (char*)element1 + size_ll;
+            element2 = (char*)element2 + size_ll;
 
-    free(tmp);
+            size -= size_ll;
+        }
+        else if (size_i <= size)
+        {
+            int tmp = 0;
+
+            tmp = *(int*)element1;
+            *(int*)element1 = *(int*)element2;
+            *(int*)element2 = tmp;
+
+            element1 = (char*)element1 + size_i;
+            element2 = (char*)element2 + size_i;
+
+            size -= size_i;
+        }
+        else
+        {
+            char tmp = 0;
+
+            tmp = *(char*)element1;
+            *(char*)element1 = *(char*)element2;
+            *(char*)element2 = tmp;
+
+            element1 = (char*)element1 + size_ch;
+            element2 = (char*)element2 + size_ch;
+
+            size -= size_ch;
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
 
+// Execution_FAILED 
 int handleErrors(int status)
 {
     switch (status)

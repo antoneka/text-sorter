@@ -27,7 +27,7 @@ static size_t partition(void *data, size_t left, size_t right, size_t size, int 
             left++;
         }
 
-        while(comparator((char*)data + right * size, pivot) > 0)
+        while (comparator((char*)data + right * size, pivot) > 0)
         {
             right--;
         }
@@ -38,7 +38,7 @@ static size_t partition(void *data, size_t left, size_t right, size_t size, int 
             return right;
         }
 
-        swapVoid(data, left, right, size);
+        swapVoid((char*)data + left * size, (char*)data + right * size, size);
         
         right--;
         left++;
@@ -52,10 +52,7 @@ void quickSort(void *data, size_t left, size_t right, size_t size, int (*compara
     assert(data != nullptr);
     assert(comparator != nullptr);
 
-    if (left >= right)
-    {
-        return;
-    }
+    if (left >= right) return;
 
     size_t mid = partition(data, left, right, size, comparator);
 

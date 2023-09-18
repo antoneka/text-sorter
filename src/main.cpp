@@ -16,6 +16,7 @@ int main()
     
     if (handleErrors(creation_status) != EXECUTION_SUCCESS)
     {
+        // printErrors
         oneginFileDtor(&onegin);
         return 1;
     }

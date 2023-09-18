@@ -23,6 +23,6 @@ size_t getFileSize(const char *filename);
 
 int handleErrors(int status);
 
-void swapVoid(void *data, size_t element1_pos, size_t element2_pos, size_t size);
+void swapVoid(void *element1, void *element2, size_t size);
 
 #endif // COMMON_H

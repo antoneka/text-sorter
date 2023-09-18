@@ -6,11 +6,13 @@
 
 struct FileNames
 {
-    const char *input           = nullptr;
-    const char *output_sorted   = nullptr;
-    const char *output_rsorted  = nullptr;
-    const char *output_original = nullptr;
+    const char *input           ;
+    const char *output_sorted   ;
+    const char *output_rsorted  ;
+    const char *output_original ;
 };
+
+// OneginFile file;
 
 //-------------------------------------------------------------------------------------------------
 
