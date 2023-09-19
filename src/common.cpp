@@ -78,45 +78,43 @@ void swapVoid(void *element1, void *element2, size_t size)
 
 //-------------------------------------------------------------------------------------------------
 
-// Execution_FAILED 
-int handleErrors(int status)
+void printError(int error)
 {
-    switch (status)
+    switch (error)
     {
         case FILE_OPEN_ERROR:
             fprintf(stderr, "%s\n", "File doesn`t exist");
-            return 0;
+            break;
 
         case BUFFER_INITIALIZE_ERROR:
             fprintf(stderr, "%s\n", "Buffer initialization error");
-            return 0;
+            break;
 
         case READ_SYMBOLS_ERROR:
             fprintf(stderr, "%s\n", "Text reading error");
-            return 0;
+            break;
 
         case CALLOC_STRING_ARRAY_ERROR:
             fprintf(stderr, "%s\n", "String array initialization error");
-            return 0;
+            break;
 
         case EXPANDING_STRING_ARRAY_ERROR:
             fprintf(stderr, "%s\n", "String array expansion error");
-            return 0;
+            break;
 
         case GETTING_FILE_SIZE_ERROR:
             fprintf(stderr, "%s\n", "Getting file size error");
-            return 0;
+            break;
 
         case ONEGINFILE_EXISTENCE_ERROR:
             fprintf(stderr, "%s\n", "OneginFile already exists. It can`t be constructed again");
-            return 0;
+            break;
 
         case MISSING_ONEGINFILE_ERROR:
             fprintf(stderr, "%s\n", "OneginFile doesn`t exist. It can`t be destructed");
-            return 0;
+            break;
 
         default:
-            return EXECUTION_SUCCESS;
+            assert(0 && "Unknown error");
     }
 }
-

@@ -6,10 +6,10 @@
 
 struct FileNames
 {
-    const char *input           ;
-    const char *output_sorted   ;
-    const char *output_rsorted  ;
-    const char *output_original ;
+    const char *input;
+    const char *output_sorted;
+    const char *output_rsorted;
+    const char *output_original;
 };
 
 // OneginFile file;

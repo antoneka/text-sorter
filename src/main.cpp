@@ -14,14 +14,15 @@ int main()
 
     int creation_status = OneginFileCtor(&onegin, file_names.input);
     
-    if (handleErrors(creation_status) != EXECUTION_SUCCESS)
+    if (creation_status != EXECUTION_SUCCESS)
     {
-        // printErrors
+        printError(creation_status);
         oneginFileDtor(&onegin);
+
         return 1;
     }
 
-    textSort(&onegin, (int (*) (const void*, const void*))stringsCompareFromLeft);
+    textSort(&onegin, (int (*) (const void*, const void*))stringsCompare);
 
     int output_sorted_status = outputSorted(&onegin, &file_names);
 

@@ -20,16 +20,16 @@ struct String
 
 struct OneginFile
 {
-    FILE *file = nullptr;
-    int status = DESTRUCTED;
+    FILE *file;
+    int status;
 
-    char *buffer = nullptr;
-    size_t file_size = 0;
+    char *buffer;
+    size_t file_size;
 
 
-    String *string_arr = nullptr;
-    size_t total_lines_num = 0;
-    size_t cur_line_num = 0;
+    String *string_arr;
+    size_t total_lines_num;
+    size_t cur_line_num;
 };
 
 //-------------------------------------------------------------------------------------------------

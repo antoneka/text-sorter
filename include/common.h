@@ -6,6 +6,7 @@
 
 enum Errors 
 {
+    EXECUTION_FAIL               =-2,
     EXECUTION_SUCCESS            =-1,
     GETTING_FILE_SIZE_ERROR      = 0,
     FILE_OPEN_ERROR              = 1,
@@ -21,7 +22,7 @@ enum Errors
 
 size_t getFileSize(const char *filename);
 
-int handleErrors(int status);
+void printError(int error);
 
 void swapVoid(void *element1, void *element2, size_t size);
 

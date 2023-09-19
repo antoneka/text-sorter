@@ -7,9 +7,9 @@
 
 void textSort(OneginFile *onegin, int (*comparator) (const void *, const void *));
 
-int stringsCompareFromLeft(const String *first_str_ptr, const String *second_str_ptr);
+int stringsCompare(const String *first_str_ptr, const String *second_str_ptr);
 
-int stringsCompareFromRight(const String *first_str_ptr, const String *second_str_ptr);
+int stringsReverseCompare(const String *first_str_ptr, const String *second_str_ptr);
 
 void quickSort(void *data, size_t left, size_t right, size_t size, int (*comparator) (const void*, const void*));
 
