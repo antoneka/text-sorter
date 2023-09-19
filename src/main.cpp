@@ -3,17 +3,14 @@
 #include "onegin_file.h"
 #include "text_sorting.h"
 #include "common.h"
-#include "input_output.h"
+#include "output.h"
 
 int main()
 {
     OneginFile onegin = {};
-    FileNames file_names = {};
 
-    inputFileNames(&file_names);
+    int creation_status = OneginFileCtor(&onegin, "input_text.txt", "output1_text.txt");
 
-    int creation_status = OneginFileCtor(&onegin, file_names.input);
-    
     if (creation_status != EXECUTION_SUCCESS)
     {
         printError(creation_status);
@@ -23,36 +20,18 @@ int main()
     }
 
     textSort(&onegin, (int (*) (const void*, const void*))stringsCompare);
+    outputSorted(&onegin);
 
-    int output_sorted_status = outputSorted(&onegin, &file_names);
+    textSort(&onegin, (int (*) (const void*, const void*))stringsReverseCompare);
+    outputSorted(&onegin);
 
-    if (handleErrors(output_sorted_status) != EXECUTION_SUCCESS)
-    {
-        return 1;
-    }
-
-    #if 0
-    textSort(&onegin, (int (*) (const void*, const void*))stringsCompareFromRight);
-
-    int output_rsorted_status = outputRSorted(&onegin, &names);
-
-    if (handleErrors(output_rsorted_status) != EXECUTION_SUCCESS)
-    {
-        return 1;
-    }
-    #endif
-
-    int output_original_status = outputOriginal(&onegin, &file_names);
-
-    if (handleErrors(output_original_status) != EXECUTION_SUCCESS)
-    {
-        return 1;
-    }
+    outputOriginal(&onegin);
     
     int destruction_status = oneginFileDtor(&onegin);
 
-    if (handleErrors(destruction_status) != EXECUTION_SUCCESS)
+    if (destruction_status != EXECUTION_SUCCESS)
     {
+        printError(creation_status);
         return 1;
     }
 

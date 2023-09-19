@@ -11,6 +11,8 @@ int stringsCompare(const String *first_str_ptr, const String *second_str_ptr);
 
 int stringsReverseCompare(const String *first_str_ptr, const String *second_str_ptr);
 
-void quickSort(void *data, size_t left, size_t right, size_t size, int (*comparator) (const void*, const void*));
+// void quickSort(void *data, size_t left, size_t right, size_t size, int (*comparator) (const void*, const void*));
+
+void quickSort(void *data, size_t num, size_t size, int (*comparator) (const void*, const void*));
 
 #endif // TEXT_SORTING_H

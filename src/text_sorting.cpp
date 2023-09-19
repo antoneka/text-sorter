@@ -4,60 +4,59 @@
 #include "text_sorting.h"
 #include "common.h"
 
-static size_t partition(void *data, size_t left, size_t right, size_t size, int (*comparator) (const void*, const void*));
+static void _qsort(void *data, int left_idx, int right_idx, size_t size, 
+                   int (*comparator) (const void*, const void*));
 
 //-------------------------------------------------------------------------------------------------
 
-static size_t partition(void *data, size_t left, size_t right, size_t size, int (*comparator) (const void*, const void*))
+void quickSort(void *data, size_t num, size_t size, int (*comparator) (const void*, const void*))
 {
-    assert(data != nullptr);
-    assert(comparator != nullptr);
+    int left_idx = 0;
+    int right_idx = num - 1;
 
-    void *pivot = calloc(1, size);
-
-    size_t mid_num = left + ((right - left) >> 1);
-
-    memcpy(pivot, (char*)data + mid_num * size, size);
-
-    while (true)
-    {
-        // TODO; change (size_t) to (char*)
-        while (comparator(pivot, (char*)data + left * size) > 0)
-        {
-            left++;
-        }
-
-        while (comparator((char*)data + right * size, pivot) > 0)
-        {
-            right--;
-        }
-
-        if (left >= right)
-        {
-            free(pivot);
-            return right;
-        }
-
-        swapVoid((char*)data + left * size, (char*)data + right * size, size);
-        
-        right--;
-        left++;
-    }
+    _qsort(data, left_idx, right_idx, size, comparator);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void quickSort(void *data, size_t left, size_t right, size_t size, int (*comparator) (const void*, const void*))
+static void _qsort(void *data, int left_idx, int right_idx, size_t size, int (*comparator) (const void*, const void*))
 {
-    assert(data != nullptr);
-    assert(comparator != nullptr);
+    int mid = left_idx + ((right_idx - left_idx) >> 1);
 
-    if (left >= right) return;
+    if (left_idx >= right_idx)
+    {
+        return;
+    }
 
-    size_t mid = partition(data, left, right, size, comparator);
+    void *left = (char*)data + left_idx * size;
+    void *right = (char*)data + mid * size;
 
-    quickSort(data, left, mid, size, comparator);
-    quickSort(data, mid + 1, right, size, comparator);
+    swapVoid(left, right, size);
+
+    int pivot = left_idx;
+
+    void *fast_ptr = nullptr;
+    void *slow_ptr = nullptr;
+
+    for (int i = left_idx + 1; i <= right_idx; i++)
+    {
+        fast_ptr = (char*)data + i * size;
+
+        if (comparator(left, fast_ptr) > 0)
+        {
+            pivot++;
+            slow_ptr = (char*)data + pivot * size;
+
+            swapVoid(fast_ptr, slow_ptr, size);
+        }
+    }
+
+    slow_ptr = (char*)data + pivot * size;
+    
+    swapVoid(left, slow_ptr, size);
+
+    _qsort(data, left_idx, pivot - 1, size, comparator);
+    _qsort(data, pivot + 1, right_idx, size, comparator);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -66,12 +65,10 @@ void textSort(OneginFile *onegin, int (*comparator) (const void *, const void *)
 {
     assert(onegin != nullptr);
 
-    /*
     qsort(onegin->string_arr, onegin->cur_line_num, sizeof(String), 
-        (int (*) (const void *, const void *))stringsCompareFromRight);
-    */
+        (int (*) (const void *, const void *))comparator);
 
-    quickSort(onegin->string_arr, 0, onegin->cur_line_num - 1, sizeof(String), comparator);
+//    quickSort(onegin->string_arr, onegin->cur_line_num, sizeof(String), comparator);
 }
 
 //-------------------------------------------------------------------------------------------------

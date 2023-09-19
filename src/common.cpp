@@ -82,8 +82,12 @@ void printError(int error)
 {
     switch (error)
     {
-        case FILE_OPEN_ERROR:
-            fprintf(stderr, "%s\n", "File doesn`t exist");
+        case INPUT_FILE_OPEN_ERROR:
+            fprintf(stderr, "%s\n", "Input file doesn`t exist");
+            break;
+
+        case OUTPUT_FILE_OPEN_ERROR:
+            fprintf(stderr, "%s\n", "Failed to create an output file");
             break;
 
         case BUFFER_INITIALIZE_ERROR:
@@ -106,11 +110,11 @@ void printError(int error)
             fprintf(stderr, "%s\n", "Getting file size error");
             break;
 
-        case ONEGINFILE_EXISTENCE_ERROR:
+        case ONEGINFILE_ALREADY_CONSTRUCTED:
             fprintf(stderr, "%s\n", "OneginFile already exists. It can`t be constructed again");
             break;
 
-        case MISSING_ONEGINFILE_ERROR:
+        case ONEGINFILE_ALREADY_DESTRUCTED:
             fprintf(stderr, "%s\n", "OneginFile doesn`t exist. It can`t be destructed");
             break;
 

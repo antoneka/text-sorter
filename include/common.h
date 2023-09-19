@@ -6,16 +6,17 @@
 
 enum Errors 
 {
-    EXECUTION_FAIL               =-2,
-    EXECUTION_SUCCESS            =-1,
-    GETTING_FILE_SIZE_ERROR      = 0,
-    FILE_OPEN_ERROR              = 1,
-    BUFFER_INITIALIZE_ERROR      = 2,
-    READ_SYMBOLS_ERROR           = 3,
-    EXPANDING_STRING_ARRAY_ERROR = 4,
-    CALLOC_STRING_ARRAY_ERROR    = 5,
-    ONEGINFILE_EXISTENCE_ERROR   = 6,
-    MISSING_ONEGINFILE_ERROR     = 7,
+    EXECUTION_FAIL                 =-2,
+    EXECUTION_SUCCESS              =-1,
+    GETTING_FILE_SIZE_ERROR        = 0,
+    INPUT_FILE_OPEN_ERROR          = 1,
+    OUTPUT_FILE_OPEN_ERROR         = 2,
+    BUFFER_INITIALIZE_ERROR        = 3,
+    READ_SYMBOLS_ERROR             = 4,
+    EXPANDING_STRING_ARRAY_ERROR   = 5,
+    CALLOC_STRING_ARRAY_ERROR      = 6,
+    ONEGINFILE_ALREADY_CONSTRUCTED = 7,
+    ONEGINFILE_ALREADY_DESTRUCTED  = 8,
 };
 
 //-------------------------------------------------------------------------------------------------

@@ -8,8 +8,7 @@ const int STANDART_LINES_NUM = 1000;
 
 enum OnegFileStatus
 {
-    CONSTRUCTED = 1,
-    DESTRUCTED  = 0,
+    CONSTRUCTED = 1, DESTRUCTED  = 0,
 };
 
 struct String
@@ -20,12 +19,13 @@ struct String
 
 struct OneginFile
 {
-    FILE *file;
+    FILE *file_input;
+    FILE *file_output;
+
     int status;
 
     char *buffer;
     size_t file_size;
-
 
     String *string_arr;
     size_t total_lines_num;
@@ -34,7 +34,7 @@ struct OneginFile
 
 //-------------------------------------------------------------------------------------------------
 
-int OneginFileCtor(OneginFile *onegin, const char *file_name);
+int OneginFileCtor(OneginFile *onegin, const char *input_name, const char *output_name);
 
 int oneginFileDtor(OneginFile *onegin);
 
