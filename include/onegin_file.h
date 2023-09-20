@@ -8,7 +8,8 @@ const int STANDART_LINES_NUM = 1000;
 
 enum OnegFileStatus
 {
-    CONSTRUCTED = 1, DESTRUCTED  = 0,
+    CONSTRUCTED = 1, 
+    DESTRUCTED  = 0,
 };
 
 struct String

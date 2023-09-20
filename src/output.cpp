@@ -26,7 +26,9 @@ void outputOriginal(OneginFile *onegin)
 {
     assert(onegin != nullptr);
 
-    for (size_t string_num = 0, symbol_cnt = 0; string_num < onegin->cur_line_num; string_num++)
+    int symbol_cnt = 0;
+
+    for (size_t string_num = 0; string_num < onegin->cur_line_num; string_num++)
     {
         symbol_cnt += fprintf(onegin->file_output, "%s\n", onegin->buffer + symbol_cnt);
     }

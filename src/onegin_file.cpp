@@ -30,9 +30,9 @@ int OneginFileCtor(OneginFile *onegin, const char *input_name, const char *outpu
         return INPUT_FILE_OPEN_ERROR;
     }
 
-    onegin->file_output = fopen(output_name, "a+");
+    onegin->file_output = fopen(output_name, "w+");
 
-    if (!onegin->file_input)
+    if (!onegin->file_output)
     {
         return OUTPUT_FILE_OPEN_ERROR;
     }
@@ -116,7 +116,7 @@ static int fillStringArr(OneginFile *onegin)
 
     size_t string_len = 1;
 
-    for (size_t symbol_cnt = 1; symbol_cnt < onegin->file_size - 1; symbol_cnt++)
+    for (size_t symbol_cnt = 1; symbol_cnt < onegin->file_size; symbol_cnt++)
     {
         if (onegin->buffer[symbol_cnt] == '\n')
         {
