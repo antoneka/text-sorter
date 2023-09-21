@@ -34,35 +34,35 @@ static void _qsort(void *data, size_t left_idx, size_t right_idx, size_t size,
 
   //  size_t mid = left_idx + ((right_idx - left_idx) >> 1);
 
-    void *left = (char*)data + left_idx * size;
+    void *first_elem = (char*)data + left_idx * size;
  //   void *right = (char*)data + mid * size;
 
 //    swapVoid(left, right, size);
 
-    size_t pivot = left_idx;
+    size_t pivot_idx = left_idx;
 
     void *fast_ptr = nullptr;
-    void *slow_ptr = nullptr;
+    void *pivot = nullptr;
 
     for (size_t i = left_idx + 1; i <= right_idx; i++)
     {
         fast_ptr = (char*)data + i * size;
 
-        if (comparator(left, fast_ptr) > 0)
+        if (comparator(first_elem, fast_ptr) > 0)
         {
-            pivot++;
-            slow_ptr = (char*)data + pivot * size;
+            pivot_idx++;
+            pivot = (char*)data + pivot_idx * size;
 
-            swapVoid(fast_ptr, slow_ptr, size);
+            swapVoid(fast_ptr, pivot, size);
         }
     }
 
-    slow_ptr = (char*)data + pivot * size;
+    pivot = (char*)data + pivot_idx * size;
     
-    swapVoid(left, slow_ptr, size);
+    swapVoid(first_elem, pivot, size);
 
-    _qsort(data, left_idx, pivot == 0 ? left_idx : pivot - 1, size, comparator);
-    _qsort(data, pivot + 1, right_idx, size, comparator);
+    _qsort(data, left_idx, pivot_idx == 0 ? left_idx : pivot_idx - 1, size, comparator);
+    _qsort(data, pivot_idx + 1, right_idx, size, comparator);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ void textSort(OneginFile *onegin, int (*comparator) (const void *, const void *)
 {
     assert(onegin != nullptr);
 
-    quickSort(onegin->string_arr, onegin->cur_line_num, sizeof(String), comparator);
+    quickSort(onegin->string_arr, onegin->total_lines_num, sizeof(String), comparator);
 }
 
 //-------------------------------------------------------------------------------------------------

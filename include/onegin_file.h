@@ -30,7 +30,6 @@ struct OneginFile
 
     String *string_arr;
     size_t total_lines_num;
-    size_t cur_line_num;
 };
 
 //-------------------------------------------------------------------------------------------------

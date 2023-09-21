@@ -9,7 +9,7 @@ int main()
 {
     OneginFile onegin = {};
 
-    int creation_status = OneginFileCtor(&onegin, "input_text.txt", "output1_text.txt");
+    int creation_status = OneginFileCtor(&onegin, "input_text.txt", "output_text.txt");
 
     if (creation_status != EXECUTION_SUCCESS)
     {
