@@ -32,12 +32,7 @@ static void _qsort(void *data, size_t left_idx, size_t right_idx, size_t size,
         return;
     }
 
-  //  size_t mid = left_idx + ((right_idx - left_idx) >> 1);
-
     void *first_elem = (char*)data + left_idx * size;
- //   void *right = (char*)data + mid * size;
-
-//    swapVoid(left, right, size);
 
     size_t pivot_idx = left_idx;
 
@@ -155,16 +150,6 @@ int stringsReverseCompare(const String *first_str_ptr, const String *second_str_
 
         first_num_chars--;
         second_num_chars--;
-    }
-
-    while (first_num_chars > 0)
-    {
-        first_num_chars--; 
-    }
-
-    while (second_num_chars > 0)
-    {
-        second_num_chars--; 
     }
 
     return tolower(first_string[first_num_chars]) - tolower(second_string[second_num_chars]);

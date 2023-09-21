@@ -31,7 +31,7 @@ int main()
 
     if (destruction_status != EXECUTION_SUCCESS)
     {
-        printError(creation_status);
+        printError(destruction_status);
         return 1;
     }
 

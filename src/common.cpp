@@ -90,20 +90,16 @@ void printError(int error)
             fprintf(stderr, "%s\n", "Failed to create an output file");
             break;
 
-        case BUFFER_INITIALIZE_ERROR:
-            fprintf(stderr, "%s\n", "Buffer initialization error");
+        case BUFFER_ALLOCATION_ERROR:
+            fprintf(stderr, "%s\n", "Buffer allocation error");
             break;
 
         case READ_SYMBOLS_ERROR:
             fprintf(stderr, "%s\n", "Text reading error");
             break;
 
-        case CALLOC_STRING_ARRAY_ERROR:
-            fprintf(stderr, "%s\n", "String array initialization error");
-            break;
-
-        case EXPANDING_STRING_ARRAY_ERROR:
-            fprintf(stderr, "%s\n", "String array expansion error");
+        case STRING_ARRAY_ALLOCATION_ERROR:
+            fprintf(stderr, "%s\n", "String array allocation error");
             break;
 
         case GETTING_FILE_SIZE_ERROR:

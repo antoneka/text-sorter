@@ -1,4 +1,4 @@
-CC=g++ -std=c++17
+CC=g++
 CFLAGS=-D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations\
 	   -Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts\
 	   -Wconditionally-supported -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal\
@@ -12,24 +12,22 @@ CFLAGS=-D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-
 	   -flto-odr-type-merging -fno-omit-frame-pointer -Wlarger-than=8192 -Wstack-usage=8192 -pie -fPIE\
 	   -Werror=vla -fsanitize=address,alignment,bool,bounds,enum,float-cast-overflow,float-divide-by-zero,$\
 		integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,$\
-		shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr 
+		shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr -I./include/
 
 TARGET=onegin
-
-CCFLAGS = -I./include/
 
 OBJ_DIR=.obj
 $(shell mkdir -p $(OBJ_DIR))
 
 SRC=$(wildcard src/*.cpp)
-OBJ = $(patsubst src/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
+OBJ=$(patsubst src/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
 
 .PHONY: clean
 
 all: onegin
 
 onegin: $(OBJ)
-	$(CC) $^ -o $(TARGET)
+	$(CC) $(CCFLAGS) $^ -o $(TARGET)
 
 $(OBJ_DIR)/%.o: src/%.cpp
 	$(CC) $(CCFLAGS) -c $< -o $@
