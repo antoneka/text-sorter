@@ -83,37 +83,42 @@ void printError(int error)
     switch (error)
     {
         case INPUT_FILE_OPEN_ERROR:
-            fprintf(stderr, "%s\n", "Input file doesn`t exist");
+            fprintf(stderr, "Input file doesn`t exist\n");
             break;
 
         case OUTPUT_FILE_OPEN_ERROR:
-            fprintf(stderr, "%s\n", "Failed to create an output file");
+            fprintf(stderr, "Failed to create an output file\n");
             break;
 
         case BUFFER_ALLOCATION_ERROR:
-            fprintf(stderr, "%s\n", "Buffer allocation error");
+            fprintf(stderr, "Buffer allocation error\n");
             break;
 
         case READ_SYMBOLS_ERROR:
-            fprintf(stderr, "%s\n", "Text reading error");
+            fprintf(stderr, "Text reading error\n");
             break;
 
         case STRING_ARRAY_ALLOCATION_ERROR:
-            fprintf(stderr, "%s\n", "String array allocation error");
+            fprintf(stderr, "String array allocation error\n");
             break;
 
         case GETTING_FILE_SIZE_ERROR:
-            fprintf(stderr, "%s\n", "Getting file size error");
+            fprintf(stderr, "Getting file size error\n");
             break;
 
         case ONEGINFILE_ALREADY_CONSTRUCTED:
-            fprintf(stderr, "%s\n", "OneginFile already exists. It can`t be constructed again");
+            fprintf(stderr, "OneginFile has already been constructed. It can`t be constructed again\n");
             break;
 
         case ONEGINFILE_ALREADY_DESTRUCTED:
-            fprintf(stderr, "%s\n", "OneginFile doesn`t exist. It can`t be destructed");
+            fprintf(stderr, "OneginFile has already been destructed. It can`t be destructed again\n");
             break;
 
+        case CORRUPTED_ONEGINFILE:
+            fprintf(stderr, "OneginFile wasn`t created through the constructor.\n"
+                            "It can`t be destructed with garbage data in the fields\n");
+            break;
+ 
         default:
             assert(0 && "Unknown error");
     }

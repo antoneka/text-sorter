@@ -116,11 +116,11 @@ static int initStringArray(OneginFile *onegin)
         return STRING_ARRAY_ALLOCATION_ERROR;
     }
 
-    int lines_counting_status = fillStringArr(onegin);
+    int fill_arr_status = fillStringArr(onegin);
 
-    if (lines_counting_status != EXECUTION_SUCCESS)
+    if (fill_arr_status != EXECUTION_SUCCESS)
     {
-        return lines_counting_status;
+        return fill_arr_status;
     }
 
     return EXECUTION_SUCCESS;
@@ -167,23 +167,21 @@ int oneginFileDtor(OneginFile *onegin)
 {
     assert(onegin != nullptr);
 
+    if (onegin->status != DESTRUCTED && onegin->status != CONSTRUCTED)
+    {
+        return CORRUPTED_ONEGINFILE;
+    }
+
     if (onegin->status == DESTRUCTED)
     {
         return ONEGINFILE_ALREADY_DESTRUCTED;
     }
 
-    // check is CONSTRUCTED
-    if (onegin->file_input != nullptr)
-    {
-        fclose(onegin->file_input);
-        onegin->file_input = nullptr;
-    }
+    fclose(onegin->file_input);
+    onegin->file_input = nullptr;
 
-    if (onegin->file_output != nullptr)
-    {
-        fclose(onegin->file_output);
-        onegin->file_output = nullptr;
-    }
+    fclose(onegin->file_output);
+    onegin->file_output = nullptr;
 
     onegin->file_size = 0;
 

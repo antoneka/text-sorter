@@ -15,6 +15,7 @@ enum Errors
     STRING_ARRAY_ALLOCATION_ERROR  = 5,
     ONEGINFILE_ALREADY_CONSTRUCTED = 6,
     ONEGINFILE_ALREADY_DESTRUCTED  = 7,
+    CORRUPTED_ONEGINFILE           = 8,
 };
 
 //-------------------------------------------------------------------------------------------------
